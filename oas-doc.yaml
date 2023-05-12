@@ -1,0 +1,76 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Environment API
+  description: API for Environment Stats 
+
+paths:
+  /api/v1/environment_stats:
+    get:
+      description: Returns all environment_stats
+      operationId: getEnvironment_stats
+      responses:
+        200:
+          description: Environment_stat list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/environment_stat'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/v1/environment_stats/{year}:
+    get:
+      description: Returns a single environment_stat by its year
+      operationId: findByyear
+      parameters:
+        - required: true
+          name: year
+          description: year of the environment_stat to fetch
+          in: path
+          schema:
+            type: number
+      responses:
+        200:
+          description: Environment_stat found by year
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/environment_stat'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+components:
+  schemas:
+    environment_stat:
+        type: object
+        required:
+          - year
+        properties:
+          year:
+            type: number
+          city:
+            type: string
+          protected_space:
+            type: number
+          area:
+            type: number
+          fire:
+            type: number
+    error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+      additionalProperties: true
